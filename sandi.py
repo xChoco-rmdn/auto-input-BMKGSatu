@@ -270,17 +270,17 @@ ch = {
 }
 
 awan_lapisan = {
-    "CI": "0",
-    "CC": "1",
-    "CS": "2",
-    "AC": "3",
-    "AS": "4",
-    "NS": "5",
-    "SC": "6",
-    "ST": "7",
-    "CU": "8",
-    "CB": "9",
-    "/": "10"
+    "CI": "- cirrus (Ci)",
+    "CC": "- cirrocumulus (Cc)",
+    "CS": "- cirrostratus (Cs)",
+    "AC": "- altocumulus (Ac)",
+    "AS": "- altostratus (As)",
+    "NS": "- nimbostratus (Ns)",
+    "SC": "- stratocumulus (Sc)",
+    "ST": "- stratus (St)",
+    "CU": "- cumulus (Cu)",
+    "CB": "- cumulonimbus (Cb)",
+    "/": "/ - cloud not visible"
 }
 
 elevasi = {
@@ -294,4 +294,14 @@ elevasi = {
     7: 7,
     6: 8,
     5: 9
+}
+
+obs = {
+    "ramadhan": "Zulkifli Ramadhan",
+    "adw": "Angga Dwi Wibowo",
+    "dwi": "Dwi Harjanto",
+    "risna": "Ni Putu Risna Purwandari",
+    "fajar": "Fajaruddin Ash Shiddiq",
+    "titis": "Titis Wicaksono",
+    "hudan": "Hudan Pulung Hanasti"
 }
