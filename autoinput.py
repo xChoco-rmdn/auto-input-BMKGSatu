@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 class AutoInput:
     def __init__(self, page, user_input, obs, ww, w1w2, awan_lapisan, arah_angin, ci, cm, ch):
         """
-        Inisialisasi objek WeatherFormFiller.
+        Inisialisasi objek AutoInput.
 
         Args:
             page: Objek halaman Playwright yang sedang aktif.
@@ -60,7 +60,7 @@ class AutoInput:
             page = self.page
             user_input = self.user_input
 
-            print("Starting input process...")
+            print("Memulai Proses Input Data...")
 
             # Pilih stasiun
             page.locator("#select-station div").nth(1).click()
@@ -76,11 +76,13 @@ class AutoInput:
             tgl_harini = f"/{today.month}/{today.year} (Today)"
             page.locator("#input-datepicker__value_").click()
             page.get_by_label(tgl_harini).click()
+            # page.get_by_label("18/9/").click()
 
             # 1 Jam Pengamatan
             page.locator("#input-jam div").nth(1).click()
             page.locator("#input-jam").get_by_role("textbox").fill(user_input['jam_pengamatan'])
             page.locator("#input-jam").get_by_role("textbox").press("Enter")
+            page.wait_for_load_state("networkidle")
 
             # conditional pengisian parameter tertentu pada jam-jam penting
             jam_penting = int(user_input['jam_pengamatan'])
@@ -301,7 +303,7 @@ class AutoInput:
             # Preview
             page.get_by_role("button", name="Preview").click()
 
-            print("Form input successfully executed.")
+            print("Proses Selesai.")
 
         except Exception as e:
-            print(f"An error occurred in inputx: {e}")
+            print(f"Terdapat error pada: {e}")
