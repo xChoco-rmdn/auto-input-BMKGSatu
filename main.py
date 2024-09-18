@@ -52,20 +52,20 @@ def input_cloud_layer_2(page, user_input, awan_lapisan, arah_angin):
     page.locator("div:nth-child(3) > div:nth-child(3) > .ant-select > .ant-select-selection").first.click()
     page.get_by_role("option", name=jenis_cl_lap2_value).click()
 
-    # # 27 Jumlah CL Lapisan 2
-    # page.locator("div:nth-child(3) > div:nth-child(4) > .ant-select > .ant-select-selection").first.click()
-    # page.locator("div:nth-child(3) > div:nth-child(4) > .ant-select-search__field").first.fill(user_input['jumlah_cl_lapisan2'])
-    # page.locator("div:nth-child(3) > div:nth-child(4) > .ant-select-search__field").first.press("Enter")
+    # 27 Jumlah CL Lapisan 2
+    page.locator("div:nth-child(3) > div:nth-child(4) > .ant-select > .ant-select-selection > .ant-select-selection__rendered").first.click()
+    page.locator("div:nth-child(3) > div:nth-child(4) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").first.fill(user_input['jumlah_cl_lapisan2'])
+    page.get_by_role("option", name="oktas").click()
+
 
     # 28 Tinggi Dasar Awan Lapisan 2
     page.locator("#cloud_low_base_2").click()
     page.locator("#cloud_low_base_2").fill(user_input['tinggi_dasar_aw_lapisan2'])
 
-    # # 29 Arah Gerak Awan Lapisan 2
-    # arah_gerak_aw_lap2_value = arah_angin.get(user_input['arah_gerak_aw_lapisan2'], "0")
-    # page.locator("div:nth-child(3) > div:nth-child(7) > .ant-select > .ant-select-selection").click()
-    # page.locator("div:nth-child(3) > div:nth-child(7) > .ant-select-search__field").fill(arah_gerak_aw_lap2_value)
-    # page.locator("div:nth-child(3) > div:nth-child(7) > .ant-select-search__field").press("Enter")
+    # 29 Arah Gerak Awan Lapisan 2
+    arah_gerak_aw_lap2_value = arah_angin.get(user_input['arah_gerak_aw_lapisan2'], "0")
+    page.locator("div:nth-child(3) > div:nth-child(7) > .ant-select > .ant-select-selection > .ant-select-selection__rendered").click()
+    page.locator("div:nth-child(3) > div:nth-child(7) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").fill(arah_gerak_aw_lap2_value)
 
 
 def inputx(page, user_input):
@@ -209,34 +209,38 @@ def inputx(page, user_input):
         page.locator("div:nth-child(3) > .ant-select > .ant-select-selection").first.click()
         page.get_by_role("option", name=jenis_cl_lap1_value).click()
 
-        # # 20 Jumlah CL Lapisan 1
-        # page.locator("div:nth-child(4) > .ant-select > .ant-select-selection").first.click()
-        # page.locator("div:nth-child(4) > .ant-select-search__field").first.fill(user_input['jumlah_cl_lapisan1'])
-        # page.locator("div:nth-child(4) > .ant-select-search__field").first.press("Tab")
+        # 20 Jumlah CL Lapisan 1
+        page.locator("div:nth-child(4) > .ant-select > .ant-select-selection").first.click()
+        page.locator("div:nth-child(4) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").first.fill(user_input['jumlah_cl_lapisan1'])
+        page.get_by_role("option", name="oktas").click()
 
         # 21 Tinggi Dasar Awan Lapisan 1
         page.locator("#cloud_low_base_1").click()
         page.locator("#cloud_low_base_1").fill(user_input['tinggi_dasar_aw_lapisan1'])
 
-        # # 23 Arah Gerak Awan Lapisan 1
-        # arah_gerak_aw_lap1_value = arah_angin.get(user_input['arah_gerak_aw_lapisan1'], "0")
-        # page.locator("div:nth-child(7) > .ant-select > .ant-select-selection").first.click()
-        # page.locator("div:nth-child(7) > .ant-select-search__field").first.fill(arah_gerak_aw_lap1_value)
-        # page.locator("div:nth-child(7) > .ant-select-search__field").first.press("Enter")
+        # 23 Arah Gerak Awan Lapisan 1
+        arah_gerak_aw_lap1_value = arah_angin.get(user_input['arah_gerak_aw_lapisan1'], "0")
+        page.locator("div:nth-child(7) > .ant-select > .ant-select-selection > .ant-select-selection__rendered").first.click()
+        page.locator("div:nth-child(7) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").first.fill(arah_gerak_aw_lap1_value)
 
-        print(cl_value)
-        if cl_value == "9" or "2" or "3":
-            # 22 Tinggi Puncak Awan Lapisan 1
-            page.locator("#cloud_low_peak_1").click()
-            page.locator("#cloud_low_peak_1").fill(user_input['tinggi_puncak_aw_lapisan1'])
-
-            # 24 Sudut Elevasi Awan Lapisan 1
-            page.locator("#cloud_elevation_1_angle_ec div").nth(1).click()
-            page.locator("#cloud_elevation_1_angle_ec").get_by_role("textbox").fill(
-                str(user_input['sudut_elevasi_aw_lapisan1']))
-            page.locator("#cloud_elevation_1_angle_ec").get_by_role("textbox").press("Enter")
-
+        # Condtional untuk membuka pengisian tinggi puncak, sudut elevasi awan, dan awan lapisan ke-2
+        if jenis_cl_lap1_value == "- cumulus (Cu)" or "- cumulonimbus (Cb)":
+            has_peak = user_input['tinggi_puncak_aw_lapisan1']
             input_cloud_layer_2(page, user_input, awan_lapisan, arah_angin)
+            if has_peak:
+                # 22 Tinggi Puncak Awan Lapisan 1
+                page.locator("#cloud_low_peak_1").click()
+                page.locator("#cloud_low_peak_1").fill(has_peak)
+
+                # 24 Sudut Elevasi Awan Lapisan 1
+                page.locator("#cloud_elevation_1_angle_ec div").nth(1).click()
+                page.locator("#cloud_elevation_1_angle_ec").get_by_role("textbox").fill(
+                    str(user_input['sudut_elevasi_aw_lapisan1']))
+                page.locator("#cloud_elevation_1_angle_ec").get_by_role("textbox").press("Enter")
+
+                # bagian kolom arah sebenarnya >>>> di samain aja nilainya seperi arah Arah Gerak Awan Lapisan 1
+                page.locator("div:nth-child(9) > .ant-select > .ant-select-selection > .ant-select-selection__rendered").first.click()
+                page.locator("div:nth-child(9) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").first.fill(arah_gerak_aw_lap1_value)
 
         # 30 CM Awan Menengah
         cm_value = cm.get(user_input['cm_awan_menengah'], "1")
