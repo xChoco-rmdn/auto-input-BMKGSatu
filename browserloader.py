@@ -16,6 +16,7 @@ class BrowserLoader:
         self.user_data_dir = user_data_dir
         self.headless = headless
         self.screen_width, self.screen_height = get_monitors()[0].width, get_monitors()[0].height
+        self.browser = None # untuk menyimpan objek browser
 
     def load_page(self, url: str):
         """
