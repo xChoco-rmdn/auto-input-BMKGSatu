@@ -88,7 +88,7 @@ Program ini memungkinkan beberapa konfigurasi untuk diubah sesuai kebutuhan peng
    Gantilah `"Stasiun Meteorologi Sultan"` dengan nama stasiun yang sesuai dengan lokasi pengamatan Anda.
 
 3. **Nama Observer**  
-   Nama observer atau pengamat yang bertugas juga dapat disesuaikan. Pada file `sandi.py`, nama observer diatur sesuai dgn sdm yang ada
+   Nama observer atau pengamat yang bertugas juga dapat disesuaikan. Pada file `sandi.py`bagian dictionary `obs`, nama observer diatur sesuai dgn sdm yang ada
 
 4. **File Excel Input**  
    Path ke file Excel input yang berisi data cuaca harus disesuaikan di sistem lokal Anda. Pada file `main.py` dan `App_BMKGsatuAutoInput.py`, path file Excel diatur pada bagian berikut:
