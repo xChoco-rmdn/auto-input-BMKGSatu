@@ -71,7 +71,7 @@ class Application(tk.Tk):
             # Inisialisasi BrowserLoader
             self.loader = BrowserLoader(
                 playwright=self.playwright,
-                user_data_dir='/Users/mb2/learn-python/autoss/.venv/bin/python /Users/mb2/learn-python/auto-input-BMKGSatu/',
+                user_data_dir='/path/to/your/directory', # <<<<<<<< Sesuaikan lokasinya
                 # Direktori penyimpanan data login
                 headless=False
             )
