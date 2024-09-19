@@ -5,7 +5,8 @@ from playwright.sync_api import sync_playwright
 from autoinput import AutoInput
 from sandi import ww, w1w2, ci, awan_lapisan, arah_angin, cm, ch, obs
 from browserloader import BrowserLoader
-from user_input import UserInputUpdater  # Import class dari user_input.py
+from user_input import UserInputUpdater
+import os
 
 
 class Application(tk.Tk):
@@ -68,11 +69,15 @@ class Application(tk.Tk):
             # Inisialisasi Playwright
             self.playwright = sync_playwright().start()
 
+            # Cek dan buat folder jika belum ada
+            user_data_dir = 'C:/Users/Administrator/Documents/autoinput'
+            if not os.path.exists(user_data_dir):
+                os.makedirs(user_data_dir)
+
             # Inisialisasi BrowserLoader
             self.loader = BrowserLoader(
                 playwright=self.playwright,
-                user_data_dir='/path/to/your/directory', # <<<<<<<< Sesuaikan lokasinya
-                # Direktori penyimpanan data login
+                user_data_dir=user_data_dir, # Direktori penyimpanan data login
                 headless=False
             )
 

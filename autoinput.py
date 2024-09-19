@@ -1,3 +1,4 @@
+import re
 from datetime import datetime, timezone
 
 
@@ -64,7 +65,7 @@ class AutoInput:
 
             # Pilih stasiun
             page.locator("#select-station div").nth(1).click()
-            page.get_by_role("option", name="Stasiun Meteorologi Sultan").click() #nama stasiun bisa disesuaikan
+            page.get_by_role("option", name=re.compile(r"^Stasiun")).click()
 
             # pilih observer on duty
             obs_onduty_value = self.obs.get(user_input['obs_onduty'].lower(), "Zulkifli Ramadhan")
