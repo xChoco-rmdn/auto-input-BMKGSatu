@@ -11,7 +11,7 @@ class UserInputUpdater:
         """
         self.user_input = user_input
 
-    def update_from_file(self, file_path, jam_terpilih):
+    def update_from_file(self, file_path, jam_terpilih, sheet_name=None):
         """
         Update user_input dari file Excel atau CSV berdasarkan jam terpilih.
 
@@ -21,12 +21,15 @@ class UserInputUpdater:
 
         Returns:
             dict: Dictionary user_input yang sudah diperbarui.
+            :param jam_terpilih:
+            :param file_path:
+            :param sheet_name:
         """
         # Tentukan format file (CSV atau Excel)
         if file_path.endswith('.csv'):
             data = pd.read_csv(file_path)
         else:
-            data = pd.read_excel(file_path)
+            data = pd.read_excel(file_path, sheet_name=sheet_name)
 
         # Cari baris yang sesuai dengan jam terpilih
         row = data[data['Jam'] == jam_terpilih]

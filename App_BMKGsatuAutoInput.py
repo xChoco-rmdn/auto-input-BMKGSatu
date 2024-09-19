@@ -155,7 +155,8 @@ class Application(tk.Tk):
             updater = UserInputUpdater(user_input)
 
             # Memperbarui user_input berdasarkan data pada jam yang dipilih
-            updated_user_input = updater.update_from_file(self.file_path.get(), self.jam_terpilih.get())
+            sheet_name = "input_data" # Nama sheet
+            updated_user_input = updater.update_from_file(self.file_path.get(), self.jam_terpilih.get(), sheet_name)
 
             # Menampilkan hasil update
             print("User input setelah di-update:", updated_user_input)
