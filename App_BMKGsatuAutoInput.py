@@ -124,7 +124,7 @@ class Application(tk.Tk):
                 'tinggi_dasar_aw_lapisan1': '540',
                 'tinggi_puncak_aw_lapisan1': '',
                 'arah_gerak_aw_lapisan1': 'NORTH EAST',
-                'sudut_elevasi_aw_lapisan1': 0,
+                'sudut_elevasi_aw_lapisan1': '0',
                 'jenis_cl_lapisan2': 'CU',
                 'jumlah_cl_lapisan2': '4',
                 'tinggi_dasar_aw_lapisan2': '600',

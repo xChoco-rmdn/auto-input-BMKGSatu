@@ -34,9 +34,32 @@ class UserInputUpdater:
         if row.empty:
             raise ValueError(f"Jam {jam_terpilih} tidak ditemukan di file.")
 
+        # Parameter yang harus memiliki satu angka di belakang koma
+        decimal_keys = [
+            'lama_penyinaran', 'suhu_bola_kering', 'suhu_bola_basah',
+            'suhu_maksimum', 'suhu_minimum', 'tekanan_qff', 'tekanan_qfe'
+        ]
+
         # Update user_input dengan data dari row yang ditemukan
         for key in self.user_input:
             if key in row.columns:
-                self.user_input[key] = row.iloc[0][key]
+                value = row.iloc[0][key]
+                # Jika key berada di daftar parameter yang memerlukan satu angka di belakang koma
+                if key in decimal_keys:
+                    if pd.notna(value):  # Pastikan nilai bukan NaN
+                        self.user_input[
+                            key] = f"{float(value):.1f}"  # Konversi ke float lalu ke string dengan satu angka desimal
+                    else:
+                        self.user_input[key] = ""  # Jika NaN, jadikan string kosong
+                else:
+                    # Untuk kunci lainnya, jika NaN maka jadikan string kosong
+                    if pd.notna(value):
+                        if pd.api.types.is_numeric_dtype(value):
+                            # Konversi nilai menjadi integer jika mungkin
+                            self.user_input[key] = str(int(float(value)))  # Konversi ke int tanpa desimal
+                        else:
+                            self.user_input[key] = str(value)  # Konversi nilai non-numerik menjadi string
+                    else:
+                        self.user_input[key] = ""  # Jika NaN, jadikan string kosong
 
         return self.user_input

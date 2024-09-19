@@ -203,7 +203,8 @@ class AutoInput:
             # 20 Jumlah CL Lapisan 1
             page.locator("div:nth-child(4) > .ant-select > .ant-select-selection").first.click()
             page.locator("div:nth-child(4) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").first.fill(user_input['jumlah_cl_lapisan1'])
-            page.get_by_role("option", name="oktas").click()
+            # page.get_by_role("option", name="oktas").click()
+            page.locator("div:nth-child(4) > .ant-select > .ant-select-selection").first.press("Enter")
 
             # 21 Tinggi Dasar Awan Lapisan 1
             page.locator("#cloud_low_base_1").click()
@@ -273,7 +274,8 @@ class AutoInput:
             # 37 NCH jumah awan tinggi
             page.locator("#cloud_high_cover_oktas div").nth(1).click()
             page.locator("#cloud_high_cover_oktas").get_by_role("textbox").fill(user_input['nch_awan_tinggi'])
-            page.get_by_role("option", name="oktas").click()
+            # page.get_by_role("option", name="oktas").click()
+            page.locator("#cloud_high_cover_oktas div").nth(1).press("Enter")
 
             # 38 jenis awan tinggi
             jenis_awan_tinggi_value = self.awan_lapisan.get(user_input['ch_awan_tinggi'], "0")
@@ -284,7 +286,8 @@ class AutoInput:
             jumlah_awan_tinggi = user_input['nch_awan_tinggi']
             page.locator("div:nth-child(3) > .card > .card-body > #collapse-row-2 > div > div:nth-child(2) > div:nth-child(4) > .ant-select > .ant-select-selection > .ant-select-selection__rendered").click()
             page.locator("div:nth-child(3) > .card > .card-body > #collapse-row-2 > div > div:nth-child(2) > div:nth-child(4) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").fill(jumlah_awan_tinggi)
-            page.get_by_role("option", name=f"- {jumlah_awan_tinggi} oktas").click()
+            # page.get_by_role("option", name=f"- {jumlah_awan_tinggi} oktas").click()
+            page.locator("div:nth-child(3) > .card > .card-body > #collapse-row-2 > div > div:nth-child(2) > div:nth-child(4) > .ant-select > .ant-select-selection > .ant-select-selection__rendered").press("Enter")
 
             # 40 Tinggi Dasar Awan Tinggi
             page.locator("#cloud_high_base_1").click()
