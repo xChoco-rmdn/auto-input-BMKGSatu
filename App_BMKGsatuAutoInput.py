@@ -11,7 +11,7 @@ from user_input import UserInputUpdater  # Import class dari user_input.py
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Auto Input BMKG")
+        self.title("Auto Input BMKG by Zulkiflirmdn")
         self.geometry("400x300")
 
         # Variables
