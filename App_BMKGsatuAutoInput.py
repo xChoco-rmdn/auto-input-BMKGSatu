@@ -12,6 +12,8 @@ import os
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.loader = None
+        self.playwright = None
         self.title("Auto Input BMKG by Zulkiflirmdn")
         self.geometry("400x300")
 
