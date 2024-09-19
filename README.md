@@ -2,7 +2,7 @@
 
 # Auto Input BMKGSatu V2 >>>> https://bmkgsatu.bmkg.go.id/
 
-Auto Input BMKG Satu adalah program otomatisasi pengisian formulir cuaca harian yang digunakan pada stasiun meteorologi BMKG, sesuai dengan form ME.48. Program ini membantu melakukan pengisian data cuaca, seperti suhu, kecepatan angin, penguapan, dan banyak lagi, secara otomatis ke sistem BMKG Satu berdasarkan input dari file Excel yang sesuai dengan template yang telah disediakan.
+Auto Input BMKG Satu adalah program otomatisasi pengisian form cuaca harian yang digunakan pada stasiun meteorologi BMKG, sesuai dengan form ME.48. Program ini membantu melakukan pengisian data secara otomatis ke website BMKGSatu berdasarkan input dari file Excel yang sesuai dengan template yang telah disediakan.
 
 ## Fitur Utama
 - **Otomatisasi Input**: Program ini mengisi formulir cuaca harian BMKG secara otomatis.
