@@ -15,10 +15,11 @@ Program ini memerlukan beberapa dependencies untuk menjalankan fungsinya, beriku
 - `Pandas` - Digunakan untuk memproses data dari file Excel atau CSV.
 - `Tkinter` - Untuk membangun antarmuka GUI.
 - `screeninfo` - Mendapatkan informasi layar yang digunakan untuk menyesuaikan tampilan browser.
+- `openpyxl` - untuk membaca input file excel
 
 Berikut contoh instalasi dependencies menggunakan `pip`:
 ```bash
-pip install pandas playwright tkinter screeninfo
+pip install pandas playwright tkinter screeninfo openpyxl
 ```
 
 ## Cara Penggunaan
