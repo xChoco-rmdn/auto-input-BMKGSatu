@@ -1,19 +1,19 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter import ttk
-from playwright.sync_api import sync_playwright
 from autoinput import AutoInput
-from sandi import ww, w1w2, ci, awan_lapisan, arah_angin, cm, ch, obs
-from browserloader import BrowserLoader
+from sandi import obs, ww, w1w2, ci, awan_lapisan, arah_angin, cm, ch
 from user_input import UserInputUpdater
+from browsermanager import BrowserManager
+import logging
 import os
+
 
 
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.loader = None
-        self.playwright = None
+        self.browser_manager = None
         self.title("Auto Input BMKG by Zulkiflirmdn")
         self.geometry("400x300")
 
@@ -21,91 +21,55 @@ class Application(tk.Tk):
         self.file_path = tk.StringVar()
         self.jam_terpilih = tk.IntVar(value=0)
 
-        # Playwright instance untuk browser
-        self.browser = None
-        self.page = None
-
-        # Jalankan Chromium saat aplikasi dimulai
-        self.start_browser()
+        # Inisialisasi browser manager
+        self.browser_manager = BrowserManager(user_data_dir='C:/Users/Administrator/Documents/autoinput')
+        self.browser_manager.start_browser()
 
         # Create Widgets
         self.create_widgets()
 
     def create_widgets(self):
-        # Label untuk Pemilihan File
+        """UI Components"""
         file_label = tk.Label(self, text="Pilih File (Excel/CSV):")
         file_label.pack(pady=10)
 
-        # Entry untuk Jalur File
         file_entry = tk.Entry(self, textvariable=self.file_path, width=40)
         file_entry.pack(pady=5)
 
-        # Tombol untuk Browse File
         browse_button = tk.Button(self, text="Browse", command=self.browse_file)
         browse_button.pack(pady=5)
 
-        # Label untuk Jam Terpilih
         jam_label = tk.Label(self, text="Pilih Jam Pengamatan:")
         jam_label.pack(pady=10)
 
-        # Dropdown untuk Pilihan Jam (0-23)
         jam_selector = ttk.Combobox(self, textvariable=self.jam_terpilih, values=list(range(24)), state="readonly")
         jam_selector.pack(pady=5)
         jam_selector.current(0)
 
-        # Tombol untuk Menjalankan Proses
         run_button = tk.Button(self, text="Run", command=self.run_auto_input)
         run_button.pack(pady=20)
 
     def browse_file(self):
-        # Buka dialog untuk memilih file Excel atau CSV
+        """Buka dialog untuk memilih file Excel atau CSVe."""
         filename = filedialog.askopenfilename(
             title="Pilih File Excel atau CSV",
             filetypes=(("Excel Files", "*.xlsx;*.xls"), ("CSV Files", "*.csv"), ("All Files", "*.*"))
         )
         self.file_path.set(filename)
+        logging.info(f"File selected: {filename}")
 
-    def start_browser(self):
-        # Menjalankan Playwright untuk membuka Chromium saat aplikasi dijalankan
-        try:
-            # Inisialisasi Playwright
-            self.playwright = sync_playwright().start()
-
-            # Cek dan buat folder jika belum ada
-            user_data_dir = 'C:/Users/Administrator/Documents/autoinput'
-            if not os.path.exists(user_data_dir):
-                os.makedirs(user_data_dir)
-
-            # Inisialisasi BrowserLoader
-            self.loader = BrowserLoader(
-                playwright=self.playwright,
-                user_data_dir=user_data_dir, # Direktori penyimpanan data login
-                headless=False
-            )
-
-            # Memuat halaman BMKGSatu
-            self.page = self.loader.load_page("https://bmkgsatu.bmkg.go.id/meteorologi/sinoptik")
-
-            # Simpan referensi browser agar tidak tertutup
-            self.browser = self.loader.browser
-
-            # Tampilkan pesan bahwa browser siap
-            print("Browser sudah siap dan terbuka.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Terdapat Error saat membuka browser: {e}")
+    def validate_file_path(self, file_path):
+        """Validasi apakah path file ada dan benar."""
+        if not file_path or not os.path.exists(file_path):
+            raise FileNotFoundError(f"File {file_path} not found.")
 
     def run_auto_input(self):
+        """Jalankan proses input otomatis setelah memvalidasi input file."""
         try:
-            if not self.file_path.get():
-                messagebox.showerror("Error", "File belum dipilih!")
-                return
+            # Validasi path file menggunakan the helper method
+            self.validate_file_path(self.file_path.get())
 
-            # Cek apakah browser sudah siap
-            if not self.page:
-                messagebox.showerror("Error", "Browser belum siap, silakan tunggu.")
-                return
-
-            # Mengambil data user_input default
+            # Default user input untuk testing (can be updated)
             user_input = {
                 'obs_onduty': 'Ramadhan',
                 'jam_pengamatan': '23',
@@ -151,28 +115,34 @@ class Application(tk.Tk):
                 'keadaan_tanah': '0'
             }
 
-            # Inisialisasi class dengan dictionary user_input
+            # Perbarui user_input dari file yang dipilih
             updater = UserInputUpdater(user_input)
-
-            # Memperbarui user_input berdasarkan data pada jam yang dipilih
-            sheet_name = "input_data" # Nama sheet
+            sheet_name = "input_data"
             updated_user_input = updater.update_from_file(self.file_path.get(), self.jam_terpilih.get(), sheet_name)
 
-            # Menampilkan hasil update
-            print("User input setelah di-update:", updated_user_input)
+            logging.info(f"User input after update: {updated_user_input}")
 
-            # Inisialisasi objek dengan data yang diperlukan
-            form_filler = AutoInput(self.page, user_input, obs, ww, w1w2, awan_lapisan, arah_angin, ci, cm, ch)
-
-            # Menjalankan proses pengisian form
+            # Mulai isi formulir dengan input_pengguna yang diperbarui
+            form_filler = AutoInput(self.browser_manager.page, updated_user_input, obs, ww, w1w2, awan_lapisan, arah_angin, ci, cm, ch)
             form_filler.fill_form()
 
             messagebox.showinfo("Success", "Proses input form selesai!")
+            logging.info("Form input process completed successfully.")
 
+        except FileNotFoundError as e:
+            messagebox.showerror("Error", str(e))
+            logging.error(f"File error: {e}")
         except Exception as e:
-            messagebox.showerror("Error", f"Terdapat Error: {e}")
+            logging.error(f"Unexpected error: {e}")
+            messagebox.showerror("Error", f"An unexpected error occurred: {e}")
+
+    def on_exit(self):
+        """Cleanup on exit."""
+        self.browser_manager.close_browser()
+        logging.info("Application closed.")
 
 
 if __name__ == "__main__":
     app = Application()
+    app.protocol("WM_DELETE_WINDOW", app.on_exit)
     app.mainloop()
