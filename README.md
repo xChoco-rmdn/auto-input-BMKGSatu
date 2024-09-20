@@ -23,7 +23,7 @@ pip install pandas playwright tkinter screeninfo openpyxl
 ```
 
 ## Cara Penggunaan
-1. Siapkan file Excel input yang sesuai dengan format pengamatan cuaca (bisa di hubungkan dengan Form ME.48 upt).
+1. Siapkan file Excel input yang sesuai dengan format pengamatan cuaca (bisa di hubungkan dengan Form ME.48 upt) dengan nama sheet harus `input_data`.
 2. Jalankan program ini, Anda dapat memilih file Excel sebagai input.
 3. Program akan mengisi data dari Excel ke form BMKG Satu secara otomatis setelah klick run.
 
