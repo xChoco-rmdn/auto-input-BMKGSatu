@@ -2,12 +2,25 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from tkinter import ttk
 from autoinput import AutoInput
-from sandi import obs, ww, w1w2, ci, awan_lapisan, arah_angin, cm, ch
+from sandi import obs, ww, w1w2, ci, awan_lapisan, arah_angin, cm, ch, default_user_input
 from user_input import UserInputUpdater
 from browsermanager import BrowserManager
 import logging
 import os
 
+# fungsi helper
+def validate_file_path(file_path):
+    """Validasi apakah path file ada dan benar."""
+    if not file_path or not os.path.exists(file_path):
+        raise FileNotFoundError(f"File {file_path} not found.")
+
+
+def get_default_user_data_dir():
+    """Get or create default user data directory."""
+    user_data_dir = 'C:/Users/Administrator/Documents/autoinput'
+    if not os.path.exists(user_data_dir):
+        os.makedirs(user_data_dir)
+    return user_data_dir
 
 
 class Application(tk.Tk):
@@ -22,14 +35,28 @@ class Application(tk.Tk):
         self.jam_terpilih = tk.IntVar(value=0)
 
         # Inisialisasi browser manager
-        self.browser_manager = BrowserManager(user_data_dir='C:/Users/Administrator/Documents/autoinput')
-        self.browser_manager.start_browser()
+        self.init_browser()
 
         # Create Widgets
         self.create_widgets()
 
+    def init_browser(self):
+        """Initialize the browser manager asynchronously."""
+        try:
+            self.browser_manager = BrowserManager(user_data_dir=get_default_user_data_dir())
+            self.browser_manager.start_browser()
+        except Exception as e:
+            logging.error(f"Failed to start browser: {e}")
+            messagebox.showerror("Error", f"Error starting browser: {e}")
+
     def create_widgets(self):
-        """UI Components"""
+        """Create UI components."""
+        self.create_file_selection_ui()
+        self.create_time_selection_ui()
+        self.create_run_button()
+
+    def create_file_selection_ui(self):
+        """Create UI elements for file selection."""
         file_label = tk.Label(self, text="Pilih File (Excel/CSV):")
         file_label.pack(pady=10)
 
@@ -39,6 +66,8 @@ class Application(tk.Tk):
         browse_button = tk.Button(self, text="Browse", command=self.browse_file)
         browse_button.pack(pady=5)
 
+    def create_time_selection_ui(self):
+        """Create UI elements for selecting observation time."""
         jam_label = tk.Label(self, text="Pilih Jam Pengamatan:")
         jam_label.pack(pady=10)
 
@@ -46,11 +75,13 @@ class Application(tk.Tk):
         jam_selector.pack(pady=5)
         jam_selector.current(0)
 
+    def create_run_button(self):
+        """Create the 'Run' button that starts the auto input process."""
         run_button = tk.Button(self, text="Run", command=self.run_auto_input)
         run_button.pack(pady=20)
 
     def browse_file(self):
-        """Buka dialog untuk memilih file Excel atau CSVe."""
+        """Buka dialog untuk memilih file Excel atau CSV."""
         filename = filedialog.askopenfilename(
             title="Pilih File Excel atau CSV",
             filetypes=(("Excel Files", "*.xlsx;*.xls"), ("CSV Files", "*.csv"), ("All Files", "*.*"))
@@ -58,62 +89,14 @@ class Application(tk.Tk):
         self.file_path.set(filename)
         logging.info(f"File selected: {filename}")
 
-    def validate_file_path(self, file_path):
-        """Validasi apakah path file ada dan benar."""
-        if not file_path or not os.path.exists(file_path):
-            raise FileNotFoundError(f"File {file_path} not found.")
-
     def run_auto_input(self):
         """Jalankan proses input otomatis setelah memvalidasi input file."""
         try:
             # Validasi path file menggunakan the helper method
-            self.validate_file_path(self.file_path.get())
+            validate_file_path(self.file_path.get())
 
             # Default user input untuk testing (can be updated)
-            user_input = {
-                'obs_onduty': 'Ramadhan',
-                'jam_pengamatan': '23',
-                'pengenal_angin': '3',
-                'arah_angin': '150',
-                'kecepatan_angin': '11',
-                'jarak_penglihatan': '10',
-                'cuaca_pengamatan': 'MIST',
-                'cuaca_w1': 'RAIN',
-                'cuaca_w2': 'TS',
-                'tekanan_qff': '1002.3',
-                'tekanan_qfe': '1001.8',
-                'suhu_bola_kering': '25.3',
-                'suhu_bola_basah': '22.3',
-                'suhu_maksimum': '23.4',
-                'suhu_minimum': '23.4',
-                'oktas': '6',
-                'hujan_ditakar': '20',
-                'cl_dominan': 'CU',
-                'ncl_total': '6',
-                'jenis_cl_lapisan1': 'SC',
-                'jumlah_cl_lapisan1': '5',
-                'tinggi_dasar_aw_lapisan1': '540',
-                'tinggi_puncak_aw_lapisan1': '',
-                'arah_gerak_aw_lapisan1': 'NORTH EAST',
-                'sudut_elevasi_aw_lapisan1': '0',
-                'jenis_cl_lapisan2': 'CU',
-                'jumlah_cl_lapisan2': '4',
-                'tinggi_dasar_aw_lapisan2': '600',
-                'arah_gerak_aw_lapisan2': 'SOUTH EAST',
-                'cm_awan_menengah': 'AC',
-                'ncm_awan_menengah': '1',
-                'jenis_awan_menengah': 'AS',
-                'tinggi_dasar_aw_cm': '3000',
-                'arah_gerak_cm': 'EAST',
-                'ch_awan_tinggi': 'CI',
-                'nch_awan_tinggi': '5',
-                'tinggi_dasar_aw_ch': '9000',
-                'arah_gerak_ch': 'WEST',
-                'penguapan': '7.72',
-                'pengenal_penguapan': '0',
-                'lama_penyinaran': '7.76',
-                'keadaan_tanah': '0'
-            }
+            user_input = default_user_input.copy()
 
             # Perbarui user_input dari file yang dipilih
             updater = UserInputUpdater(user_input)
@@ -144,5 +127,5 @@ class Application(tk.Tk):
 
 if __name__ == "__main__":
     app = Application()
-    app.protocol("WM_DELETE_WINDOW", app.on_exit)
+    # app.protocol("WM_DELETE_WINDOW", app.on_exit)
     app.mainloop()

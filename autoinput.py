@@ -102,8 +102,8 @@ class AutoInput:
                 page.get_by_label("Penguapan (mm)").fill(user_input['penguapan'])
 
                 # 43 Pengenal Data Penguapan (IE)
+                page.locator("#evaporation_eq_indicator_ie").get_by_role("combobox").click()
                 page.locator("#evaporation_eq_indicator_ie").get_by_role("textbox").fill(user_input['pengenal_penguapan'])
-                page.locator("#evaporation_eq_indicator_ie").get_by_role("textbox").press("Enter")
 
                 # 44 Lama Penyinaran Matahari
                 page.get_by_label("Lama Penyinaran Matahari (jam)").click()
