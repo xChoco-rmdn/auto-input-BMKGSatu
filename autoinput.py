@@ -218,10 +218,9 @@ class AutoInput:
                 page.locator("div:nth-child(7) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").first.fill(arah_gerak_aw_lap1_value)
 
                 # Condtional untuk membuka pengisian tinggi puncak, sudut elevasi awan, dan awan lapisan ke-2
-                if user_input['jenis_cl_lapisan1'] in ["- cumulus (Cu)", "- cumulonimbus (Cb)"]:
+                if user_input['jenis_cl_lapisan1'] in ["CU", "CB"]:
                     has_peak = user_input['tinggi_puncak_aw_lapisan1']
-                    self.input_cloud_layer_2()
-                    if has_peak:
+                    if has_peak != "0":
                         # 22 Tinggi Puncak Awan Lapisan 1
                         page.locator("#cloud_low_peak_1").click()
                         page.locator("#cloud_low_peak_1").fill(has_peak)
@@ -235,6 +234,9 @@ class AutoInput:
                         # bagian kolom arah sebenarnya >>>> di samain aja nilainya seperi arah Arah Gerak Awan Lapisan 1
                         page.locator("div:nth-child(9) > .ant-select > .ant-select-selection > .ant-select-selection__rendered").first.click()
                         page.locator("div:nth-child(9) > .ant-select > .ant-select-selection > .ant-select-selection__rendered > .ant-select-search > .ant-select-search__field__wrap > .ant-select-search__field").first.fill(arah_gerak_aw_lap1_value)
+
+                        if user_input['jenis_cl_lapisan1'] == "CB":
+                            self.input_cloud_layer_2()
 
             # 30 CM Awan Menengah
             cm_value = self.cm.get(user_input['cm_awan_menengah'], "0")

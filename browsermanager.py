@@ -37,3 +37,17 @@ class BrowserManager:
             self.browser.close()
             logging.info("Browser closed.")
 
+        if self.playwright:
+            # This ensures the entire Playwright instance is stopped, closing the actual browser
+            self.playwright.stop()
+            logging.info("Playwright stopped and browser fully closed.")
+
+    def reload_browser(self):
+        """
+        Reload the browser page.
+        """
+        if self.page:
+            # Reload the page using the reload() method of the Page object
+            self.page.reload()
+            self.page.wait_for_load_state("networkidle")  # Optionally wait for the page to fully reload
+            logging.info("Page reloaded.")

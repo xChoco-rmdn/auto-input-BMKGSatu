@@ -76,10 +76,18 @@ class Application(tk.Tk):
         jam_selector.current(0)
 
     def create_run_button(self):
-        """Create the 'Run' button that starts the auto input process."""
-        run_button = tk.Button(self, text="Run", command=self.run_auto_input)
-        run_button.pack(pady=20)
+        """Create the 'Run' and 'Refresh web' button that starts the auto input process and reload the page."""
+        # Create a frame to hold the buttons
+        button_frame = tk.Frame(self)
+        button_frame.pack(pady=20)  # Add padding to the frame
 
+        # Run Button
+        run_button = tk.Button(button_frame, text="Run", command=self.run_auto_input)
+        run_button.pack(side=tk.LEFT, padx=10)  # Add padding to the left and right
+
+        # Refresh Button
+        reload_button = tk.Button(button_frame, text="Reload Page", command=self.browser_manager.reload_browser)
+        reload_button.pack(side=tk.LEFT, padx=10)  # Add padding between buttons
     def browse_file(self):
         """Buka dialog untuk memilih file Excel atau CSV."""
         filename = filedialog.askopenfilename(

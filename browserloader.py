@@ -29,19 +29,21 @@ class BrowserLoader:
             page (playwright.sync_api.Page): Objek halaman Playwright yang diload.
         """
         print("Launching browser with persistent context...")
+        # chrome_executable_path = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
 
         # Meluncurkan browser dengan konteks persisten (session tersimpan)
         browser = self.playwright.chromium.launch_persistent_context(
             user_data_dir=self.user_data_dir,  # Path ke direktori data pengguna
             headless=self.headless,  # Apakah berjalan dalam mode headless
-            args=['--start-fullscreen']  # Menjalankan dalam mode fullscreen
+            args=['--start-fullscreen'],  # Menjalankan dalam mode fullscreen
+            # executable_path = chrome_executable_path  # Menentukan jalur Chrome
         )
 
         # Ambil halaman pertama yang terbuka atau buka halaman baru jika tidak ada
         page = browser.pages[0] if browser.pages else browser.new_page()
 
         # Atur ukuran tampilan browser ke layar penuh
-        page.set_viewport_size({"width": self.screen_width, "height": self.screen_height})
+        page.set_viewport_size({"width": 1915, "height": 911})
         print(f"Navigating to {url}...")
         page.goto(url)
 
